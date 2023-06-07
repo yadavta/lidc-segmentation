@@ -1,0 +1,166 @@
+import warnings
+import torch
+import math
+import sys
+from tqdm import tqdm, trange
+from torchmetrics.classification import BinaryJaccardIndex, MulticlassJaccardIndex
+import os
+import torch.nn.functional as F
+import pickle
+
+
+class LIDCTrainer2:
+    """
+    Trainer class that eases the training of a PyTorch model.
+    Parameters
+    ----------
+    model : torch.nn.Module
+        The model to train.
+    criterion : torch.nn.Module
+        Loss function criterion.
+    optimizer : torch.optim
+        Optimizer to perform the parameters update.
+    epochs : int
+        The total number of iterations of all the training 
+        data in one cycle for training the model.
+    scaler : torch.cuda.amp
+        The parameter can be used to normalize PyTorch Tensors 
+        using native functions more detail:
+        https://pytorch.org/docs/stable/index.html.
+    lr_scheduler : torch.optim.lr_scheduler
+        A predefined framework that adjusts the learning rate 
+        between epochs or iterations as the training progresses.
+    Attributes
+    ----------
+    train_losses_ : torch.tensor
+        It is a log of train losses for each epoch step.
+    val_losses_ : torch.tensor
+        It is a log of validation losses for each epoch step.
+    """
+    def __init__(
+        self, 
+        model, 
+        criterion, 
+        optimizer,
+        epochs,
+        scaler=None,
+        lr_scheduler=None, 
+        device=None,
+        save_dir=None,
+        num_classes=1,
+    ):
+        self.criterion = criterion
+        self.optimizer = optimizer
+        self.scaler = scaler
+        self.lr_scheduler = lr_scheduler
+        self.device = self._get_device(device)
+        self.epochs = epochs
+        self.model = model.to(self.device)
+        self.num_classes = num_classes
+        
+        if num_classes == 1:
+            self._metric = BinaryJaccardIndex().to(self.device)
+        else:
+            self._metric = MulticlassJaccardIndex(num_classes).to(self.device)
+            
+        self.save_dir = save_dir
+        
+        if save_dir is not None and not os.path.exists(save_dir):
+            os.makedirs(save_dir)
+        print('Saving to ' + save_dir)
+        
+    def fit(self, train_loader, val_loader):
+        """
+        Fit the model using the given loaders for the given number
+        of epochs.
+        
+        Parameters
+        ----------
+        train_loader : 
+        val_loader : 
+        """
+        # attributes  
+        self.train_losses_ = torch.zeros(self.epochs)
+        self.val_losses_ = torch.zeros(self.epochs)
+        # ---- train process ----
+        for epoch in trange(1, self.epochs + 1, desc='Training Model on {} epochs'.format(self.epochs)):
+            # train
+            self._train_one_epoch(train_loader, epoch)
+            # validate
+            self._evaluate(val_loader, epoch)
+            
+            self.lr_scheduler.step(self.val_losses_[epoch - 1])
+        
+        torch.save(self.model.state_dict(), os.path.join(self.save_dir, 'model.pt'))
+        
+        with open(os.path.join(self.save_dir, 'train_losses.pkl'), 'wb') as fp:
+                pickle.dump(self.train_losses_, fp)
+        with open(os.path.join(self.save_dir, 'val_iou.pkl'), 'wb') as fp:
+            pickle.dump(self.val_losses_, fp)
+        
+        print('Saved to ' + self.save_dir)
+        print(self.optimizer)
+    
+    def _train_one_epoch(self, data_loader, epoch):
+        self.model.train()
+        losses = torch.zeros(len(data_loader))
+        with tqdm(data_loader, unit=" training-batch", colour="green") as training:
+            for i, (images, labels) in enumerate(training):
+                training.set_description(f"Epoch {epoch}")
+                images, labels = images.to(self.device), labels.to(self.device)
+                # forward pass
+                with torch.cuda.amp.autocast(enabled=self.scaler is not None):
+                    preds = self.model(images)
+                    loss = self.criterion(preds.float(), labels.float())
+                if not math.isfinite(loss):
+                    msg = f"Loss is {loss}, stopping training!"
+                    warnings.warn(msg)
+                    sys.exit(1)
+                # remove gradient from previous passes
+                self.optimizer.zero_grad()
+                # backprop
+                if self.scaler is not None:
+                    self.scaler.scale(loss).backward()
+                    self.scaler.step(self.optimizer)
+                    self.scaler.update()
+                else:
+                    loss.backward()
+                # parameters update
+                self.optimizer.step()
+                
+                training.set_postfix(loss=loss.item())
+                losses[i] = loss.item()
+        
+            self.train_losses_[epoch - 1] = losses.mean()
+    
+    @torch.inference_mode()
+    def _evaluate(self, data_loader, epoch):
+        self.model.eval()
+        
+        with tqdm(data_loader, unit=" eval-batch", colour="green") as evaluation:
+            for i, (images, labels) in enumerate(evaluation):
+                evaluation.set_description(f"Validation")
+                images, labels = images.to(self.device), labels.to(self.device)
+                preds = self.model(images).to(self.device)
+                
+                assert(len(torch.unique(preds)) > 1)
+                # iou metric
+                
+                if self.num_classes > 1:
+                    preds = F.sigmoid(preds)
+                iou = self._metric(preds, labels)
+        
+        print('mIOU: ' + str(self._metric.compute().item()))
+        
+        if self.save_dir is not None and max(self.val_losses_) < self._metric.compute().item():
+            torch.save(self.model.state_dict(), os.path.join(self.save_dir, 'model_best.pt'))
+        
+        self.val_losses_[epoch - 1] = self._metric.compute()
+
+    def _get_device(self, _device):
+        if _device is None:
+            device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+            msg = f"Device was automatically selected: {device}"
+            print(msg)
+            return device
+        return _device
