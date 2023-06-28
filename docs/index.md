@@ -8,11 +8,13 @@ Our research paper is written in IEEE-CPVR style. Our poster is in standard 32x2
 
 ## Research Highlights
 
+#### Motivation
+
 #### Pipeline
 
-We introduced the first open-source "plug-and-play" pipeline for the LIDC dataset, entirely in PyTorch. This contribution enables the researcher community to easily try out different approaches to the LIDC dataset (whether it be expanding the neural network architecure, utilizing different augmentations, training on with a new loss function,  or really anything supported by PyTorch) *without* having to deal with the confusing world that is medical imaging. 
+We introduced the first open-source "plug-and-play" pipeline for the LIDC dataset, entirely in PyTorch. This contribution enables the research community to easily try out different approaches to the LIDC dataset (whether it be expanding the neural network architecure, utilizing different augmentations, training on with a new loss function,  or really anything supported by PyTorch) *without* having to deal with the confusing world that is medical imaging. 
 
-> In essence, our pipeline abstracts away the "medical" part of this task and lets researchers treat it as a normal deep learning task.
+> In essence, our pipeline abstracts away the medical part of problem task and lets researchers treat it as a normal deep learning task.
 
 Under the hood, our workflow follows this training procedure:
  
@@ -23,6 +25,12 @@ Under the hood, our workflow follows this training procedure:
 5. Extract regions of interest (ROIs) using either Faster R-CNN or YOLO (our pipeline supports both).
 6. Augment images using any of PyTorch's native augmentations. We also added support for RandAugment, AutoAugment, and TrivialAugment.
 7. Utilize our custom-designed U-Net or another PyTorch-compatiable architecture for the LIDC task.
+
+#### Augmentations
+
+#### Comparison with Existing Work
+
+#### Conclusion
 
 ## Contributors
 
