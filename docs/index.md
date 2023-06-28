@@ -46,6 +46,10 @@ Our best-performing U-Net model had the architecture described below.
 
 ### Augmentations
 
+We tried a variety of augmentations on our models, as described by the table below. AutoAug (1), RandAug, and TrivialAug were pre-trained on ImageNet. AutoAug (2) was custom trained by us on the LIDC dataset using the [Albumentations](https://github.com/albumentations-team/albumentations) library. A more detailed discussion can be found in our paper under section 2.6. Augmentation Techniques.
+
+<img width="369" alt="comparison of augmentation techniques effectiveness on LIDC" src="https://github.com/yadavta/lidc-segmentation/assets/20195205/f9476a84-2993-4d85-a063-610b2c1c6355">
+
 ### Conclusion
 
 Contrary to the suggestions of existing literature, augmentations provide only minor benefits for lung nodule segmentation. Future models should simply use horizontal and vertical flipping for augmentations and instead focus their efforts on improving the underlying network architecture.
