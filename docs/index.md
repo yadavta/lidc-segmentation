@@ -31,7 +31,7 @@ Under the hood, our workflow follows this training procedure:
 4. For the segmentation task, crop each nodule image and mask with a 64 x 64 pixel bounding box.
 5. Extract regions of interest (ROIs) using either [Faster R-CNN](https://arxiv.org/abs/1506.01497) or [YOLO](https://arxiv.org/abs/1506.02640) (our pipeline supports both).
 6. Augment images using any of [PyTorch's native augmentations](https://pytorch.org/vision/main/transforms.html). We also added support for [RandAugment](https://arxiv.org/abs/1909.13719), [AutoAugment](https://arxiv.org/abs/1805.09501), and [TrivialAugment](https://arxiv.org/abs/2103.10158).
-7. Utilize our custom-designed U-Net or another PyTorch-compatiable architecture for the LIDC task.
+7. Utilize our custom-designed U-Net or another PyTorch-compatible architecture for the LIDC task.
 
 ### Models
 
@@ -41,7 +41,7 @@ Under the hood, our workflow follows this training procedure:
 
 Contrary to the suggestions of existing literature, augmentations provide only minor benefits for lung nodule segmentation. Future models should simply use horizontal and vertical flipping for augmentations and instead focus their efforts on improving the underlying network architecture.
 
-We also bleieve that the development of a comprehensive automatic augmentation suite tailored to medical images would be of great utility. Similarly, efforts to increase the training data set by using GANs should also be explored further.
+We also believe that the development of a comprehensive automatic augmentation suite tailored to medical images would be of great utility. Similarly, efforts to increase the training data set by using GANs should also be explored further.
 
 ## Contributors
 
