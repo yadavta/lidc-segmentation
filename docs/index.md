@@ -29,13 +29,13 @@ Under the hood, our workflow follows this training procedure:
 2. Utilize [pylidc](https://pylidc.github.io) and [Pidicom](https://github.com/pydicom/pydicom) to extract 10,005 2D slices of 512 x 512 pixel arrays and convert them to PNG images.
 3. For the detection task, store each nodule's bounding box cooordinates in [MS-COCO format](https://cocodataset.org/#format-data).
 4. For the segmentation task, crop each nodule image and mask with a 64 x 64 pixel bounding box.
-5. Extract regions of interest (ROIs) using either Faster R-CNN or YOLO (our pipeline supports both).
-6. Augment images using any of PyTorch's native augmentations. We also added support for RandAugment, AutoAugment, and TrivialAugment.
+5. Extract regions of interest (ROIs) using either [Faster R-CNN](https://arxiv.org/abs/1506.01497) or [YOLO](https://arxiv.org/abs/1506.02640) (our pipeline supports both).
+6. Augment images using any of [PyTorch's native augmentations](https://pytorch.org/vision/main/transforms.html). We also added support for [RandAugment](https://arxiv.org/abs/1909.13719), [AutoAugment](https://arxiv.org/abs/1805.09501), and [TrivialAugment](https://arxiv.org/abs/2103.10158).
 7. Utilize our custom-designed U-Net or another PyTorch-compatiable architecture for the LIDC task.
 
-### Augmentations
+### Models
 
-### Comparison with Existing Work
+### Augmentations
 
 ### Conclusion
 
