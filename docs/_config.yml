@@ -1,5 +1,8 @@
 remote_theme: pages-themes/minimal@v0.2.0
-title: Data Augmentation for Lung Nodule Segmentatoin
-description: A research project by Kevin Zhang, Tanush Yadav, and Marius Rakickas for our CSE 493G1: Deep Learning class.
+title: Data Augmentation for Lung Nodule Segmentation
+description: A deep learning research project.
+show_downloads: false
+github:
+  is_project_page: false
 plugins:
 - jekyll-remote-theme
