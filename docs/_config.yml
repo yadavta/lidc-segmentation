@@ -1,6 +1,6 @@
 remote_theme: pages-themes/minimal@v0.2.0
-title: Data Augmentation for Lung Nodule Segmentation
-description: A deep learning research project.
+title: Lung Nodule Segmentation
+description: A research project exploring the effects of data augmention on the LIDC dataset.
 show_downloads: false
 github:
   is_project_page: false
