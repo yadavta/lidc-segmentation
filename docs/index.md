@@ -35,6 +35,15 @@ Under the hood, our workflow follows this training procedure:
 
 ### Models
 
+The LIDC task can be broken down into two sub-tasks: a "detector" model which extracts ROIs where nodules may lie, and a "segmentation" model which does pixel-level classification on the ROIs. We focused on the segmentation task because general-purpose detection models transfer well to the LIDC task while general-purpose segmentation models underperform in medical contexts. The table below compares our models to existing work.
+
+<img width="377" alt="a comparison of our models to existing literature" src="https://github.com/yadavta/lidc-segmentation/assets/20195205/b64337c5-f696-4193-ac51-cf1c84930228">
+
+Our best-performing U-Net model had the architecture described below.
+
+
+<img width="383" alt="architecture of our u-net model" src="https://github.com/yadavta/lidc-segmentation/assets/20195205/717cd9a4-d50a-40a3-b998-e810a5479045">
+
 ### Augmentations
 
 ### Conclusion
