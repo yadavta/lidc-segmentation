@@ -1,3 +1,4 @@
+
 ## Quick Links
 
 - [Paper](https://drive.google.com/file/d/1bTLZDiEBEa07ajSySLb1_KffAw6OFiU_/view?usp=sharing)
@@ -9,6 +10,12 @@ Our research paper is written in IEEE-CPVR style. Our poster is in standard 32x2
 ## Research Highlights
 
 #### Motivation
+
+Lung cancer has a mere 18% survival rate in the United States, largely due to the lack of preventive screening. The current method for screening lung cancer relies on radiologists, who are already in [short supply](https://www.acr.org/Practice-Management-Quality-Informatics/ACR-Bulletin/Articles/March-2022/The-Radiology-Labor-Shortage), to manually segment nodules on CT scans. Computer-aided diagnosis (CAD) systems can help alleviate the shortage of screening capacity, but are still lacking in accuracy.
+
+> “the global implementation of lung cancer screening is of utmost importance” ~ International Association for the Study of Lung Cancer ([IASLC](https://doi.org/10.1016/j.jtho.2021.11.008)).
+
+Given the extremely small size of biomedical datasets (LIDC only includes 1018 CT scans), data augmentations intuitively seem like a potent tool. Existing research confirms this intuition, but points out that each biomedical task has differnet optimal augmentations. Crucially, there has been **no existing work** in finding the best augmentations for lung nodule segmentation. Our paper explores this open question and provides recommendations for future scientists working with the LIDC dataset.
 
 #### Pipeline
 
