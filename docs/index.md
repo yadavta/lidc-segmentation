@@ -39,8 +39,16 @@ Under the hood, our workflow follows this training procedure:
 
 ### Conclusion
 
+Contrary to the suggestions of existing literature, augmentations provide only minor benefits for lung nodule segmentation. Future models should simply use horizontal and vertical flipping for augmentations and instead focus their efforts on improving the underlying network architecture.
+
+We also bleieve that the development of a comprehensive automatic augmentation suite tailored to medical images would be of great utility. Similarly, efforts to increase the training data set by using GANs should also be explored further.
+
 ## Contributors
 
 - [Tanush Yadav](https://www.linkedin.com/in/tanushyadav/)
 - [Kevin Zhang](mailto:kzhang20@cs.washington.edu)
 - [Marius Rakickas](https://www.linkedin.com/in/marius-rakickas/)
+
+## Acknowledgements
+
+This work would not have been possible without the guidance of the CSE 493G1 teaching team and the Allen Center `prost` and `senna` undergraduate GPUs.
