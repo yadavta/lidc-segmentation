@@ -15,11 +15,11 @@ Lung cancer has a mere 18% survival rate in the United States, largely due to th
 
 > “the global implementation of lung cancer screening is of utmost importance” ~ [IASLC](https://doi.org/10.1016/j.jtho.2021.11.008) (the International Association for the Study of Lung Cancer).
 
-Given the extremely small size of biomedical datasets (LIDC only includes 1018 CT scans), data augmentations intuitively seem like a potent tool. [Existing research](https://doi.org/10.1111/1754-9485.13261) confirms this intuition, but notes that each biomedical task has different optimal augmentations. Crucially, there has been **no existing work** in finding the best augmentations for lung nodule segmentation. Our paper explores this open question and provides recommendations for future scientists working with the LIDC dataset.
+Given the extremely small size of biomedical datasets (LIDC only includes 1018 CT scans), data augmentations intuitively seem like a potent tool. [Existing research](https://doi.org/10.1111/1754-9485.13261) confirms this intuition, but notes that each biomedical task has different optimal augmentations. Crucially, there is **no existing work** in finding the best augmentations for lung nodule segmentation. Our paper explores this open question and provides recommendations for future scientists working with the LIDC dataset.
 
 ### Pipeline
 
-We introduced the first open-source "plug-and-play" pipeline for the LIDC dataset, written entirely in PyTorch. This contribution enables the research community to easily try out different approaches to the LIDC dataset (whether it be expanding the neural network architecure, utilizing different augmentations, training with a new loss function, or really anything supported by PyTorch) *without* having to deal with the confusing world that is medical imaging. 
+We introduce the first open-source "plug-and-play" pipeline for the LIDC dataset, written entirely in PyTorch. This contribution enables the research community to easily try out different approaches to the LIDC dataset (whether it be expanding the neural network architecure, utilizing different augmentations, training with a new loss function, or really anything supported by PyTorch) *without* having to deal with the confusing world that is medical imaging. 
 
 > In essence, our pipeline abstracts away the medical part of problem and lets researchers treat it as a normal deep learning task.
 
@@ -45,7 +45,9 @@ Our best-performing U-Net model outperformed all published models except [Lung_P
 
 ### Augmentations
 
-We tried a variety of augmentations on our models, as described by the table below. AutoAug (1), RandAug, and TrivialAug were pre-trained on ImageNet. AutoAug (2) was custom trained by us on the LIDC dataset using the [Albumentations](https://github.com/albumentations-team/albumentations) library. A more detailed discussion can be found in our paper under section 2.6 Augmentation Techniques.
+<img width="470" alt="examples of augmentations" src="https://github.com/yadavta/lidc-segmentation/assets/20195205/9767c975-7958-49d0-b517-0099caddc582">
+
+We tried a variety of augmentations on our models, pictured above. Their peformance is described by the table below. AutoAug (1), RandAug, and TrivialAug were pre-trained on ImageNet. AutoAug (2) was custom trained by us on the LIDC dataset using the [Albumentations](https://github.com/albumentations-team/albumentations) library. A more detailed discussion can be found in our paper in section *2.6 Augmentation Techniques*.
 
 <img width="369" alt="comparison of augmentation techniques effectiveness on LIDC" src="https://github.com/yadavta/lidc-segmentation/assets/20195205/f9476a84-2993-4d85-a063-610b2c1c6355">
 
