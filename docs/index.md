@@ -55,7 +55,7 @@ We tried a variety of augmentations on our models, pictured above. Their peforma
 
 Contrary to the suggestions of existing literature, augmentations provide only minor benefits for lung nodule segmentation. Future models should simply use horizontal and vertical flipping for augmentations and instead focus their efforts on improving the underlying network architecture.
 
-We also believe that the development of a comprehensive automatic augmentation suite tailored to medical images would be of great utility, as current ImageNet-trained augmentation libraries struggle to adapt to grayscale medical imaging. Similarly, efforts to expand the LIDC training data size by using GANs should also be explored further.
+We also believe that the development of a comprehensive automatic augmentation suite tailored to medical images would be of great utility, as current ImageNet-trained augmentation libraries struggle to adapt to grayscale medical imaging. Similarly, efforts to expand the LIDC dataset by using GANs should also be explored further.
 
 ## Contributors
 
